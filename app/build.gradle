@@ -1,0 +1,82 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.cloud.tools.endpoints-framework-client'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.google.cloud.tools:endpoints-framework-gradle-plugin:1.0.3'
+    }
+}
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion '29.0.3'
+
+    defaultConfig {
+        applicationId "com.udacity.gradle.builditbigger"
+        minSdkVersion 23
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    // Specifies one flavor dimension.
+    flavorDimensions "version"
+    productFlavors {
+
+        free {
+            dimension "version"
+            applicationId "com.udacity.gradle.builditbigger.free"
+            versionNameSuffix "-free"
+            buildConfigField 'boolean', 'HAS_INTERSTITIAL_AD', 'true'
+        }
+
+        paid {
+            dimension "version"
+            applicationId "com.udacity.gradle.builditbigger.paid"
+            versionNameSuffix "-paid"
+            buildConfigField 'boolean', 'HAS_INTERSTITIAL_AD', 'false'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    endpointsServer project(path: ':backend', configuration: 'endpoints')
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.android.gms:play-services-ads:19.1.0'
+    implementation 'com.google.api-client:google-api-client:1.30.9'
+    implementation 'com.google.http-client:google-http-client-android:1.35.0'
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
+    implementation project(path: ':javaJokes')
+    implementation project(path: ':jokeScreen')
+
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+}
