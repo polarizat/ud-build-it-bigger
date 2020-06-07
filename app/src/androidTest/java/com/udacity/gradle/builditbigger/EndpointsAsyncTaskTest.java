@@ -13,8 +13,8 @@ import static org.junit.Assert.assertNotNull;
 public class EndpointsAsyncTaskTest {
 
     @Rule
-    public final ActivityTestRule<MainActivity> activityTestRule =
-            new ActivityTestRule<>(MainActivity.class);
+    public final ActivityTestRule<MainActivityFree> activityTestRule =
+            new ActivityTestRule<>(MainActivityFree.class);
 
     @Test
     public void testAsyncTask() throws InterruptedException, ExecutionException {

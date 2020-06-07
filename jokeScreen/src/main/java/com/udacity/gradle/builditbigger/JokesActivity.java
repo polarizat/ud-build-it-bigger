@@ -21,7 +21,8 @@ public class JokesActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String joke = extras.getString(EXTRA_JOKE);
-            jokeTv.setText(joke);
+            if (joke != null) jokeTv.setText(joke);
+            else jokeTv.setText(R.string.error_message_null_joke);
         }
 
     }
